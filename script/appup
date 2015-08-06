@@ -1,0 +1,36 @@
+#!/bin/sh
+
+ROOT="$(cd $(dirname "$0")/..; pwd)"
+cd "$ROOT"
+
+test -t 1 && { # terminal
+    ok() { echo "[0;32m$@[m"; }
+    ng() { echo "[0;31m$@[m"; }
+} || {         # pipe
+    ok() { echo "$@"; }
+    ng() { echo "$@"; }
+}
+
+OK() { ok "[ OK ]	$@"; }
+INFO() { echo "[INFO]	$@"; }
+WARN() { ng "[WARN]	$@"; }
+FAIL() { ng "[FAIL]	$@"; }
+
+die() { FAIL "$@"; exit 1; }
+
+can() { type "$@" >/dev/null 2>&1 || return 1; }
+
+can perl || die "Install perl first"
+OK "Perl $(perl -e 'print $^V')"
+
+can cpanm || die "Install cpanm first"
+OK "App::cpanminus $(perl -MApp::cpanminus -e 'print $App::cpanminus::VERSION')"
+
+can carton || {
+    INFO 'Installing carton...'
+    cpanm --notest Carton || die "Failed to install carton"
+}
+OK "Carton $(perl -MCarton -e 'print $Carton::VERSION')"
+
+carton install
+carton exec -- perl "script/appup.pl" "$@"
