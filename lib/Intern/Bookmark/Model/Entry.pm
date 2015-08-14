@@ -4,24 +4,19 @@ use strict;
 use warnings;
 use utf8;
 
-use Encode;
-
 use JSON::Types qw();
 
 use Class::Accessor::Lite (
     ro => [qw(
         entry_id
         url
+
+        title
     )],
     new => 1,
 );
 
 use Intern::Bookmark::Util;
-
-sub title {
-    my ($self) = @_;
-    decode_utf8 $self->{title} || '';
-}
 
 sub created {
     my ($self) = @_;

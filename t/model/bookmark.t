@@ -48,7 +48,7 @@ sub _json_hash : Test(1) {
     my $bookmark = Intern::Bookmark::Model::Bookmark->new(
         bookmark_id => 1,
         user_id     => 1,
-        comment     => encode_utf8 'コメント',
+        comment     => 'コメント',
         created     => $now,
         updated     => $now,
     );
@@ -109,7 +109,7 @@ sub _as_flatten_hashref : Test(1) {
         user     => $user,
         entry_id => $entry->entry_id,
         entry    => $entry,
-        comment  => encode_utf8('こんにちは, かわいいページですね'),
+        comment  => 'こんにちは, かわいいページですね',
         created  => $now.q(),
         updated  => $now.q(),
     );
