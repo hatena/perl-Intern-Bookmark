@@ -13,17 +13,14 @@ use Class::Accessor::Lite (
         bookmark_id
         user_id
         entry_id
+
+        comment
     )],
     rw => [qw( entry user )],
     new => 1,
 );
 
 use Intern::Bookmark::Util;
-
-sub comment {
-    my ($self) = @_;
-    decode_utf8 $self->{comment} || '';
-}
 
 sub created {
     my ($self) = @_;
