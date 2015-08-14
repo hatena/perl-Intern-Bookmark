@@ -5,7 +5,6 @@ use warnings;
 use utf8;
 
 use Carp qw(croak);
-use Encode qw(encode_utf8);
 
 use Intern::Bookmark::Util;
 use Intern::Bookmark::Service::Entry;
@@ -107,7 +106,7 @@ sub create {
     $db->query(q[
         INSERT INTO bookmark (user_id, entry_id, comment, created, updated)
           VALUES (?)
-    ], [ $user_id, $entry_id, encode_utf8 $comment, $now, $now ]);
+    ], [ $user_id, $entry_id, $comment, $now, $now ]);
 }
 
 sub update {
@@ -123,7 +122,7 @@ sub update {
             updated = ?
           WHERE
             bookmark_id = ?
-    ], encode_utf8 $comment, Intern::Bookmark::Util->now, $bookmark_id);
+    ], $comment, Intern::Bookmark::Util->now, $bookmark_id);
 }
 
 sub delete_bookmark {

@@ -5,7 +5,6 @@ use warnings;
 use utf8;
 
 use Carp qw(croak);
-use Encode qw(encode_utf8);
 use LWP::UserAgent;
 
 use Intern::Bookmark::Model::Entry;
@@ -58,7 +57,7 @@ sub create {
     $db->query(q[
         INSERT INTO entry (url, title, created, updated)
           VALUES (?)
-    ], [ $url, encode_utf8 $title, $now, $now ]);
+    ], [ $url, $title, $now, $now ]);
 }
 
 sub find_or_create_entry_by_url {
