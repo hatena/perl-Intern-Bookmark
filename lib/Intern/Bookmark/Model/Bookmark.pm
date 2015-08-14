@@ -4,8 +4,6 @@ use strict;
 use warnings;
 use utf8;
 
-use Encode;
-
 use JSON::Types qw();
 
 use Class::Accessor::Lite (
