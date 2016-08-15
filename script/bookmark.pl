@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Encode;
+use Encode qw(encode_utf8 decode_utf8);
 use Pod::Usage;
 
 use FindBin;
@@ -32,7 +32,7 @@ my $db      = do {
 
 my $user = Intern::Bookmark::Service::User->find_user_by_name($db, +{ name => $name });
 unless ($user) {
-    $user = Intern::Bookmark::Service::User->create($db, +{ name => $name }) unless $user;
+    $user = Intern::Bookmark::Service::User->create($db, +{ name => $name });
 }
 
 my $handler = $HANDLERS{ $command } or pod2usage;
@@ -51,7 +51,7 @@ sub add_bookmark {
         comment => decode_utf8 $comment,
     });
 
-    print 'Bookmarked ' . $bookmark->{entry}->url . ' ' . $bookmark->comment . "\n";
+    print 'Bookmarked ' . $bookmark->{entry}->url . ' ' . encode_utf8($bookmark->comment) . "\n";
 }
 
 sub list_bookmarks {
@@ -65,7 +65,7 @@ sub list_bookmarks {
     $bookmarks = Intern::Bookmark::Service::Bookmark->load_entry_info($db, $bookmarks);
 
     foreach my $bookmark (@$bookmarks) {
-        print $bookmark->{entry}->url . ' ' . $bookmark->comment . "\n";
+        print $bookmark->{entry}->url . ' ' . encode_utf8($bookmark->comment) . "\n";
     }
 }
 
